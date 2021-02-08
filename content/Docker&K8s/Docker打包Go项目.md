@@ -58,4 +58,16 @@ Mac有两种安装方式一种是到官网上下载官方的Docker包, [Mac 官�
 请到网上自行百度，Linux上安装教程还是比较多的
 
 # Docker 打包Go项目镜像
+首先在项目的根目录下创建名为Dockerfile的文件如下图所示
+![](../../../images/docker-image.png)
 
+内容如下
+![](../../../images/docker-run.png)
+
+```golang:latest```指定了Go基础映像最新版本，````RUN mkdir /app``` 运行命令创建一个名称为app的目录 ```copy . /app``` 拷贝当前目录下所有的到app目录下 ```workdir /app``` 在容器内设置 /app 为当前工作目录 ```ENV GOPROXY="https://goproxy.io,direct" ```设定下载依赖的代理 ```RUN go mod download``` 下载依赖 编译项目 ```RUN go build -o pibbo .``` 暴露的端口是8080 执行可执行文件
+
+## 构建镜像和运行容器
+``` docker build -t pibbo .```
+![](../../../images/buid.png)
+运行镜像
+```docker run -d -p 8080:8080 pibbo```
